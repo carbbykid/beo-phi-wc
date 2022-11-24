@@ -9,7 +9,8 @@ export default async function handler(
   dbConnect();
   if (method === "GET") {
     try {
-      const resultsMatch = ResultMatch.find();
+      res.status(200).json({ hello: "helloo" });
+      const resultsMatch = await ResultMatch.find();
       res.status(200).json(resultsMatch);
     } catch (error) {
       res.status(500).json(error);
