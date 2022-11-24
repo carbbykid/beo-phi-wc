@@ -11,7 +11,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Provider store={store}>
-        <Header />
         <ToastContainer
           position="top-right"
           autoClose={2000}

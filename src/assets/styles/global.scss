@@ -32,7 +32,6 @@ body {
 
 #__next {
   width: 100%;
-  background: #fff;
   overflow-x: hidden;
 }
 
@@ -66,4 +65,17 @@ p {
 
 .break-spaces {
   white-space: break-spaces;
+}
+
+select {
+  color: black;
+}
+input {
+  color: black;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

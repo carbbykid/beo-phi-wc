@@ -12,15 +12,15 @@ module.exports = {
     },
     extend: {
       colors: {
-        "chipo-heading": "#374048",
+        "chipo-heading": "white",
         "chipo-blue": "#0084ff",
-        "chipo-text": "#4e575f",
+        "chipo-text": "white",
         "chipo-bg-second": "#f8fbfd",
         "chipo-gray-blur": "#eee",
         "chipo-orange": "#f62",
       },
       backgroundImage: {
-        "contact-bg": "url('/images/home/demo.jpeg')",
+        "home-bg": "url('/images/home/background.webp')",
         "hero-shop":
           "url('https://res.cloudinary.com/duv7awivc/image/upload/v1668759173/shop/bg-shop_bhtavi_kgaeel.webp')",
       },

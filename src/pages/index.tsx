@@ -1,53 +1,103 @@
-import Collection from "components/page/home/Collection";
-import Contact from "components/page/home/Contact";
-import Hero from "components/page/home/Hero";
-import HowItWork from "components/page/home/HowItWork";
-import NewsLetter from "components/page/home/NewsLetter";
-import Product from "components/page/home/Product";
+import Authentication from "components/page/home/Authentication";
+import MatchCart from "components/page/home/MatchCart";
 import type { NextPage } from "next";
 import Head from "next/head";
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <div className="relative before:blur-sm before:absolute before:bg-home-bg before:bg-cover before:h-full before:w-full before:-z-10 min-h-screen  pb-40">
       <Head>
         <title>ChiPoPo</title>
-        <meta name="description" content="I'm Front-end developer" />
+        <meta name="description" content="Beo Phi Battle World Cup 2022" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Hero
-        heading="The future of tech is here"
-        message="Holisticly incentivize revolutionary collaboration and idea sharing
-        before cost effective users. Actual focused services before highly
-        efficient human capital."
-      />
-      <Product
-        heading="THE PRODUCT"
-        message="Introduce the product here. A small description about what it is and how
-        it helps the user. You can also add some photos below."
-      />
-      <HowItWork
-        heading="HOW IT WORKS"
-        message="Everybody loves tech gadgets, But our’s is different. Here is how it
-        works. Its should be simple. Add how easy is to install your product"
-      />
-      <Collection
-        heading="OUR COLLECTION"
-        message="You are unique. You have unique style and you need a unique watch for you. Choose from our collection of watches."
-      />
-      <NewsLetter
-        heading="NEWSLETTER"
-        message="Subscribe to our product newsletter to get notified when we launch the product or when we completed a milestone."
-      />
-      <Contact
-        formTitle="GET IN TOUCH"
-        email="carbbykid@gmail.com"
-        firstPhoneNumber="0975113113"
-        secondPhoneNumber="0975114114"
-        address="523 Sylvan Ave, 5th Floor Mountain View, CA 94041USA"
-      />
+      <div className="wrap-content relative pt-14">
+        <Authentication />
+        <h1 className="text-center heading text-5xl mt-16">World Cup 2022</h1>
+        <h1 className="text-center heading text-3xl mt-5">Beo vs Phì</h1>
+
+        <div className="mt-12 md:mt-20">
+          {fakeData.map((match) => (
+            <div key={match.id} className="mb-16">
+              <MatchCart
+                team1={match.team1}
+                team2={match.team2}
+                time={match.time}
+                id={match.id}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Home;
+
+const fakeData = [
+  {
+    id: "bangtsvscame",
+    time: "17h 24/11/2022",
+    team1: {
+      name: "Thuỵ Sĩ",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/1hy9ek4dOIffYULM6k1fqg_96x96.png",
+    },
+    team2: {
+      name: "Cameroon",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/fmHyTSbJ-cYbY6WJzvqaZQ_96x96.png",
+    },
+  },
+  {
+    id: "banguruvshan",
+    time: "20h 24/11/2022",
+    team1: {
+      name: "Uruguay",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/KnSUdQWiGRoy89q4x85IgA_96x96.png",
+    },
+    team2: {
+      name: "Hàn Quốc",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/Uu5pwNmMHGd5bCooKrS3Lw_96x96.png",
+    },
+  },
+  {
+    id: "bangbdnvsghana",
+    time: "23h 24/11/2022",
+    team1: {
+      name: "Bồ Đào Nha",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/HJ3_2c4w791nZJj7n-Lj3Q_96x96.png",
+    },
+    team2: {
+      name: "Ghana",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/VJQ1emg0TOubjGnap4vWuw_96x96.png",
+    },
+  },
+  {
+    id: "bangbravsser",
+    time: "2h 25/11/2022",
+    team1: {
+      name: "Brazil",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/zKLzoJVYz0bb6oAnPUdwWQ_96x96.png",
+    },
+    team2: {
+      name: "Serbia",
+      score: 0,
+      flagUrl:
+        "https://ssl.gstatic.com/onebox/media/sports/logos/xyh1vmZ-xJH2iJCKjqS1Ow_96x96.png",
+    },
+  },
+];
