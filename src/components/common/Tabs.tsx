@@ -1,4 +1,4 @@
-import Reviews, { ReviewType } from "components/page/product/Reviews";
+// import Reviews, { ReviewType } from "components/page/product/Reviews";
 
 import { useState } from "react";
 
@@ -29,13 +29,13 @@ const Tabs = ({ data }: { data: TabType[] }) => {
           </div>
         ))}
       </div>
-      <div className="mt-10">
+      {/* <div className="mt-10">
         {typeof currentTab.content === "string" ? (
           currentTab.content
         ) : (
           <Reviews reviews={currentTab.content as unknown as ReviewType[]} />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
