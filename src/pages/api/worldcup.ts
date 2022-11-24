@@ -25,8 +25,6 @@ export default async function handler(
         const resultMatch = await ResultMatch.create(body);
         res.status(201).json(resultMatch);
       }
-      //   const resultMatch = ResultMatch.create(body);
-      //   res.status(201).json(resultMatch);
     } catch (error) {
       res.status(500).json(error);
     }

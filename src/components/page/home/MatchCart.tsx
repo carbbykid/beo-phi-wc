@@ -28,9 +28,8 @@ const MatchCart = ({
   const [plusScoreTeam2, setPlusScoreTeam2] = useState<number>(0);
 
   const handleSubmit = async () => {
-    console.log("click");
     let winner;
-    if (!(scoreTeam1 && scoreTeam2)) return;
+    if (scoreTeam1 === undefined || scoreTeam2 === undefined) return;
 
     if (scoreTeam1 + plusScoreTeam1 > scoreTeam2 + plusScoreTeam2) {
       winner = userSelectedTeam1;
