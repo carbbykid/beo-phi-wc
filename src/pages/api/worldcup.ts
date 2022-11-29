@@ -1,17 +1,17 @@
 import ResultMatch from "models/ResultMatch";
 import { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "../../util/mongodb";
+import db from "../../util/mongodb";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { method, body } = req;
-  dbConnect();
+  db.connect();
   if (method === "GET") {
     try {
-      res.status(200).json({ hello: "helloo" });
-      // const resultsMatch = await ResultMatch.find();
-      // res.status(200).json(resultsMatch);
+      // res.status(200).json({ hello: "helloo" });
+      const resultsMatch = await ResultMatch.find();
+      res.status(200).json(resultsMatch);
     } catch (error) {
       res.status(500).json(error);
     }
