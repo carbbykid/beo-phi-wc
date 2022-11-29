@@ -1,12 +1,12 @@
 import Email from "models/Email";
 import { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "../../util/mongodb";
+import db from "../../util/mongodb";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { method, body } = req;
-  dbConnect();
+  db.connect();
   if (method === "GET") {
     try {
       const emails = await Email.find();
