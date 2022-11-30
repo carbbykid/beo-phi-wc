@@ -3,21 +3,26 @@ import { useState } from "react";
 import { FaFutbol, FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-type Team = {
+export type Team = {
   name: string;
   flagUrl: string;
   score: number;
+  userSelected?: string;
+  plusScore?: number;
 };
+
 const MatchCart = ({
   team1,
   team2,
   id,
   time,
+  setData,
 }: {
   team1: Team;
   team2: Team;
   id: string;
   time: string;
+  setData: any;
 }) => {
   const [userSelectedTeam1, setUserSelectedTeam1] = useState<string>();
   const [userSelectedTeam2, setUserSelectedTeam2] = useState<string>();
@@ -45,14 +50,14 @@ const MatchCart = ({
       team1: {
         name: team1.name,
         flagUrl: team1.flagUrl,
-        score: team1.score,
+        score: scoreTeam1,
         userSelected: userSelectedTeam1,
         plusScore: plusScoreTeam1,
       },
       team2: {
         name: team2.name,
         flagUrl: team2.flagUrl,
-        score: team2.score,
+        score: scoreTeam2,
         userSelected: userSelectedTeam2,
         plusScore: plusScoreTeam2,
       },
@@ -63,6 +68,7 @@ const MatchCart = ({
     try {
       const result = await Axios.post("/worldcup", body);
       console.log(result);
+      setData((prev: any) => [...prev, result.data]);
       toast.success("Battle added successfully");
     } catch (error: any) {
       toast.error(error?.response?.data?.message);

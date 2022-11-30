@@ -10,7 +10,7 @@ const TableCustom = ({ data, titleRow }: TableCustom): JSX.Element => {
         <tr>
           {titleRow.map((col: any, idx: number) => (
             <th
-              className="p-3 text-sm font-semibold tracking-wide text-left text-chipo-heading"
+              className="p-3 text-sm font-semibold tracking-wide text-left text-gray-700"
               key={idx}
             >
               {col.title}
@@ -22,10 +22,10 @@ const TableCustom = ({ data, titleRow }: TableCustom): JSX.Element => {
         {data.map((row: any, idx: number) => (
           <tr
             key={idx}
-            className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"}  `}
+            className={`${idx % 2 === 0 ? "bg-[#7F1431]" : "bg-[#ba1340]"}  `}
           >
             {titleRow.map((col: any, idx: number) => (
-              <td className="p-3 text-sm text-gray-700" key={idx}>
+              <td className="p-3 text-sm text-white" key={idx}>
                 {typeof col.field === "string" ? (
                   <div>{row[col.field]}</div>
                 ) : (

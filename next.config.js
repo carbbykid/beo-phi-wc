@@ -7,11 +7,12 @@ const nextConfig = {
   swcMinify: true,
   env: {
     DEV_URL: process.env.DEV_URL,
+    WC_URL: process.env.WC_URL,
     MONGO_URL: process.env.MONGO_URL,
     DB_NAME: process.env.DB_NAME,
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", "ssl.gstatic.com"],
   },
 };
 

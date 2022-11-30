@@ -16,6 +16,7 @@ export default async function handler(
       res.status(500).json(error);
     }
   }
+
   if (method === "POST") {
     try {
       const haveBattle = await ResultMatch.find({ id: body.id });
@@ -24,9 +25,23 @@ export default async function handler(
         return;
       } else {
         const resultMatch = await ResultMatch.create(body);
+        console.log("id:", resultMatch._id);
         res.status(201).json(resultMatch);
       }
     } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  if (method === "DELETE") {
+    console.log("call delete");
+    try {
+      console.log("id:", body._id);
+      const idDeleted = await ResultMatch.deleteOne({ _id: body._id });
+      console.log("ideleted", idDeleted);
+      res.status(201).json(idDeleted);
+    } catch (error) {
+      console.log("error");
       res.status(500).json(error);
     }
   }
