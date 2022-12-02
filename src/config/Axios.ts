@@ -11,6 +11,6 @@ export const AxiosWC = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  baseURL: `${process.env.WC_URL}/api`,
+  baseURL: `${process.env.WC_URL}`,
 });
 export default Axios;

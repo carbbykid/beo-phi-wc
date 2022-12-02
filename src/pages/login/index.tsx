@@ -15,6 +15,10 @@ const Login = () => {
       <Head>
         <title>ChiPoPo</title>
         <meta name="description" content="I'm Front-end developer" />
+        {/* <meta
+          httpEquiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        /> */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="pt-36 pb-20 wrap-content">

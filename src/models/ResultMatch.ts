@@ -5,22 +5,25 @@ const ResultMatchSchema = new Schema(
   {
     id: { type: String, required: true },
     timeMatch: { type: String, required: true },
-    team1: {
+    awayTeam: {
       name: { type: String, required: true },
-      flagUrl: { type: String, required: true },
-      score: { type: Number, required: true },
+      // flagUrl: { type: String, required: true },
+      goals: { type: Number, required: true },
+      penalties: { type: Number, require: true },
       userSelected: { type: String, required: true },
       plusScore: { type: Number, required: true },
     },
-    team2: {
+    homeTeam: {
       name: { type: String, required: true },
-      flagUrl: { type: String, required: true },
-      score: { type: Number, required: true },
+      // flagUrl: { type: String, required: true },
+      goals: { type: Number, required: true },
+      penalties: { type: Number, require: true },
       userSelected: { type: String, required: true },
       plusScore: { type: Number, required: true },
     },
     winner: { type: String, required: true },
     typeMatch: { type: String, required: true },
+    status: { type: String, required: true },
   },
   { timestamps: true },
 );

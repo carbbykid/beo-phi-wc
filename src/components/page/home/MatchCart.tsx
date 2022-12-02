@@ -5,93 +5,117 @@ import { toast } from "react-toastify";
 
 export type Team = {
   name: string;
-  flagUrl: string;
-  score: number;
+  // flagUrl?: string;
   userSelected?: string;
   plusScore?: number;
+  goals: number;
+  penalties: number;
 };
 
 const MatchCart = ({
-  team1,
-  team2,
+  awayTeam,
+  homeTeam,
   id,
   time,
-  setData,
-}: {
-  team1: Team;
-  team2: Team;
+  stageName,
+  status,
+}: // setData,
+{
+  awayTeam: Team;
+  homeTeam: Team;
   id: string;
   time: string;
-  setData: any;
+  stageName: string;
+  status: string;
+  // setData: any;
 }) => {
-  const [userSelectedTeam1, setUserSelectedTeam1] = useState<string>();
-  const [userSelectedTeam2, setUserSelectedTeam2] = useState<string>();
-  const [scoreTeam1, setScoreTeam1] = useState<number>();
-  const [scoreTeam2, setScoreTeam2] = useState<number>();
-  const [typeMatch, setTypeMatch] = useState<string>();
-  const [plusScoreTeam1, setPlusScoreTeam1] = useState<number>(0);
-  const [plusScoreTeam2, setPlusScoreTeam2] = useState<number>(0);
+  const [userSelectedHomeTeam, setUserSelectedHomeTeam] = useState<string>();
+  const [userSelectedAwayTeam, setUserSelectedAwayTeam] = useState<string>();
+  // const [scoreTeam1, setScoreTeam1] = useState<number>();
+  // const [scoreTeam2, setScoreTeam2] = useState<number>();
+  // const [typeMatch, setTypeMatch] = useState<string>();
+  const [plusScoreAwayTeam, setPlusScoreAwayTeam] = useState<number>(0);
+  const [plusScoreHomeTeam, setPlusScoreHomeTeam] = useState<number>(0);
 
   const handleSubmit = async () => {
     let winner;
-    if (scoreTeam1 === undefined || scoreTeam2 === undefined) return;
+    if (awayTeam.goals === undefined || homeTeam.goals === undefined) return;
 
-    if (scoreTeam1 + plusScoreTeam1 > scoreTeam2 + plusScoreTeam2) {
-      winner = userSelectedTeam1;
+    if (
+      awayTeam.goals + plusScoreAwayTeam >
+      homeTeam.goals + plusScoreHomeTeam
+    ) {
+      winner = userSelectedAwayTeam;
     } else {
-      if (scoreTeam1 + plusScoreTeam1 === scoreTeam2 + plusScoreTeam2) {
-        winner = "draw";
-      } else winner = userSelectedTeam2;
+      if (
+        awayTeam.goals + plusScoreAwayTeam ===
+        homeTeam.goals + plusScoreHomeTeam
+      ) {
+        if (awayTeam.penalties > homeTeam.penalties) {
+          winner = userSelectedAwayTeam;
+        } else {
+          if (awayTeam.penalties === homeTeam.penalties) {
+            winner = "draw";
+          } else {
+            winner = userSelectedHomeTeam;
+          }
+        }
+      } else {
+        winner = userSelectedHomeTeam;
+      }
     }
 
     const body = {
       id: id,
       timeMatch: time,
-      team1: {
-        name: team1.name,
-        flagUrl: team1.flagUrl,
-        score: scoreTeam1,
-        userSelected: userSelectedTeam1,
-        plusScore: plusScoreTeam1,
+      awayTeam: {
+        name: awayTeam.name,
+        // flagUrl: awayTeam.flagUrl,
+        goals: awayTeam.goals,
+        penalties: awayTeam.penalties,
+        userSelected: userSelectedAwayTeam,
+        plusScore: plusScoreAwayTeam,
       },
-      team2: {
-        name: team2.name,
-        flagUrl: team2.flagUrl,
-        score: scoreTeam2,
-        userSelected: userSelectedTeam2,
-        plusScore: plusScoreTeam2,
+      homeTeam: {
+        name: homeTeam.name,
+        // flagUrl: homeTeam.flagUrl,
+        goals: homeTeam.goals,
+        penalties: homeTeam.penalties,
+        userSelected: userSelectedHomeTeam,
+        plusScore: plusScoreHomeTeam,
       },
       winner: winner,
-      typeMatch: typeMatch,
+      status: status,
+      typeMatch: stageName,
     };
 
     try {
       const result = await Axios.post("/worldcup", body);
       console.log(result);
-      setData((prev: any) => [...prev, result.data]);
+      // setData((prev: any) => [...prev, result.data]);
       toast.success("Battle added successfully");
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
     }
   };
   // useEffect(() => {
-  //   if (!userSelectedTeam1 && !userSelectedTeam2) return;
+  //   if (!userSelectedHomeTeam && !userSelectedAwayTeam) return;
 
-  //   if (userSelectedTeam1) {
-  //     if (userSelectedTeam1 === "phi") {
-  //       setUserSelectedTeam2("beo");
+  //   if (userSelectedHomeTeam) {
+  //     if (userSelectedHomeTeam === "phi") {
+  //       setuserSelectedAwayTeam("beo");
   //       return;
   //     }
-  //     setUserSelectedTeam2("phi");
+  //     setuserSelectedAwayTeam("phi");
   //     return;
   //   } else {
-  //     if (userSelectedTeam2 === "phi") {
-  //       setUserSelectedTeam1("beo");
+  //     if (userSelectedAwayTeam === "phi") {
+  //       setuserSelectedHomeTeam("beo");
   //       return;
   //     }
-  //     setUserSelectedTeam1("phi");
+  //     setuserSelectedHomeTeam("phi");
   //   }
-  // }, [userSelectedTeam1, userSelectedTeam2]);
+  // }, [userSelectedHomeTeam, userSelectedAwayTeam]);
 
   return (
     <div>
@@ -108,9 +132,19 @@ const MatchCart = ({
           />
         </button> */}
 
-        <div className="text-center">
-          <span className="text-xs md:text-lg block">Select type match</span>
-          <select
+        <div className="text-center flex justify-between items-center">
+          <span className="text-xs md:text-lg block bg-gray-900 font-semibold px-4 py-2 ">
+            {stageName}
+          </span>
+          <span
+            className={`text-xs md:text-lg block ${
+              status === "completed" ? "bg-red-500" : "bg-green-600"
+            } font-semibold capitalize px-4 py-2`}
+          >
+            {status}
+          </span>
+
+          {/* <select
             value={typeMatch}
             onChange={(e) => setTypeMatch(e.target.value)}
             className="font-semibold mt-3 text-xs w-28  md:text-lg rounded-md text-center md:w-44 py-2"
@@ -137,19 +171,19 @@ const MatchCart = ({
             <option className="font-semibold" value="tranhba">
               Trung kết
             </option>
-          </select>
+          </select> */}
         </div>
 
         <div className="mt-6 md:justify-center grid grid-cols-3 items-center gap-6 md:gap-10 md:col-span-3">
           <div className="text-center md:flex md:flex-row-reverse gap-4 items-center justify-self-end">
-            <img src={team1.flagUrl} alt="beo-phi" className="w-14 md:w-20" />
-            <span className="font-semibold text-xs md:text-lg">
-              {team1.name}
+            {/* <img src={team1.flagUrl} alt="beo-phi" className="w-14 md:w-20" /> */}
+            <span className="font-semibold text-xs md:text-2xl">
+              {homeTeam.name}
             </span>
           </div>
           <div>
             <div className="flex justify-center gap-2 md:gap-4 items-center">
-              <input
+              {/* <input
                 type="number"
                 max={10}
                 min={0}
@@ -158,9 +192,14 @@ const MatchCart = ({
                 onChange={(e) => {
                   setScoreTeam1(Number(e.target.value));
                 }}
-              />
+              /> */}
+              <span className="w-10 md:w-12 rounded-md py-2 text-center font-semibold text-xl border-4 border-emerald-200">
+                {isNaN(homeTeam.goals) || awayTeam.goals === null
+                  ? "*"
+                  : homeTeam.goals}
+              </span>
               |{" "}
-              <input
+              {/* <input
                 type="number"
                 max={10}
                 min={0}
@@ -169,18 +208,29 @@ const MatchCart = ({
                 onChange={(e) => {
                   setScoreTeam2(Number(e.target.value));
                 }}
-              />
+              /> */}
+              <span className="w-10 md:w-12 rounded-md py-2 text-center font-semibold text-xl border-4 border-emerald-200">
+                {isNaN(awayTeam.goals) || awayTeam.goals === null
+                  ? "*"
+                  : awayTeam.goals}
+              </span>
             </div>
-            <div className="mt-2 text-center">
-              <span className="text-xs md:text-lg">Enter score</span>
+            <div className="flex justify-center items-center">
+              <span className="w-10 md:w-12 rounded-md py-2 text-center font-semibold text-md ">
+                {homeTeam.penalties}
+              </span>
+              |{" "}
+              <span className="w-10 md:w-12 rounded-md py-2 text-center font-semibold text-md">
+                {awayTeam.penalties}
+              </span>
             </div>
           </div>
 
           {/* <div className="justify-self-center">{`${team1.score} : ${team2.score}`}</div> */}
           <div className="text-center md:flex items-center gap-4 justify-self-start justify-center">
-            <img src={team2.flagUrl} alt="beo-phi" className="w-14 md:w-20" />
-            <span className="font-semibold text-xs md:text-lg">
-              {team2.name}
+            {/* <img src={team2.flagUrl} alt="beo-phi" className="w-14 md:w-20" /> */}
+            <span className="font-semibold text-xs md:text-2xl">
+              {awayTeam.name}
             </span>
           </div>
         </div>
@@ -198,12 +248,12 @@ const MatchCart = ({
         </button> */}
         <div className="mt-6 grid grid-cols-3 md:gap-10 gap-6 items-center">
           <select
-            value={userSelectedTeam1}
+            value={userSelectedHomeTeam}
             onChange={(e) => {
               const value = e.target.value;
-              setUserSelectedTeam1(value);
-              if (value === "phi") setUserSelectedTeam2("beo");
-              else setUserSelectedTeam2("phi");
+              setUserSelectedHomeTeam(value);
+              if (value === "phi") setUserSelectedAwayTeam("beo");
+              else setUserSelectedAwayTeam("phi");
             }}
             className="font-semibold text-xs  w-16  md:text-lg rounded-md text-center md:w-24 justify-self-end py-2"
             defaultValue={""}
@@ -223,12 +273,12 @@ const MatchCart = ({
             <FaFutbol size={24} className="justify-self-center ml-3" />
           </div>
           <select
-            value={userSelectedTeam2}
+            value={userSelectedAwayTeam}
             onChange={(e) => {
               const value = e.target.value;
-              setUserSelectedTeam2(value);
-              if (value === "phi") setUserSelectedTeam1("beo");
-              else setUserSelectedTeam1("phi");
+              setUserSelectedAwayTeam(value);
+              if (value === "phi") setUserSelectedHomeTeam("beo");
+              else setUserSelectedHomeTeam("phi");
             }}
             className="font-semibold text-xs w-16 md:text-lg rounded-md text-center md:w-24 justify-self-start py-2"
             defaultValue={""}
@@ -251,9 +301,9 @@ const MatchCart = ({
             max={10}
             min={0}
             className="w-10 md:w-12 rounded-md py-2 text-center font-semibold text-xl border-2  justify-self-end border-gray-800"
-            value={plusScoreTeam1}
+            value={plusScoreAwayTeam}
             onChange={(e) => {
-              setPlusScoreTeam1(Number(e.target.value));
+              setPlusScoreAwayTeam(Number(e.target.value));
             }}
           />
           <div className="flex justify-center items-center">
@@ -265,25 +315,25 @@ const MatchCart = ({
             max={10}
             min={0}
             className="w-8 md:w-12 rounded-md py-2 text-center font-semibold text-xl border-2 justify-self-start border-gray-800"
-            value={plusScoreTeam2}
+            value={plusScoreHomeTeam}
             onChange={(e) => {
-              setPlusScoreTeam2(Number(e.target.value));
+              setPlusScoreHomeTeam(Number(e.target.value));
             }}
           />
         </div>
 
         <button
-          disabled={
-            !(
-              typeMatch &&
-              userSelectedTeam1 &&
-              userSelectedTeam2 &&
-              scoreTeam1 !== undefined &&
-              scoreTeam2 !== undefined
-            )
-          }
+          // disabled={
+          //   !(
+          //     typeMatch &&
+          //     userSelectedHomeTeam &&
+          //     userSelectedAwayTeam &&
+          //     scoreTeam1 !== undefined &&
+          //     scoreTeam2 !== undefined
+          //   )
+          // }
           onClick={() => handleSubmit()}
-          className="block mx-auto my-0 text-center mt-8 md:mt-5 col-start-3 col-span-1 px-5 py-2 border-2 rounded-md hover:bg-green-600 duration-200 disabled:hover:bg-inherit disabled:opacity-30"
+          className="block mx-auto my-0 text-center mt-8 md:mt-5 col-start-3 col-span-1 px-5 py-2 border-2 rounded-md hover:bg-[#FEC310] duration-200 disabled:hover:bg-inherit disabled:opacity-30"
         >
           Submit
         </button>
