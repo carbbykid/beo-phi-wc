@@ -1,7 +1,7 @@
 import FormInput from "components/common/FormInput";
 import Axios from "config/Axios";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export type FormValue = {
@@ -30,16 +30,26 @@ const Setting = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      console.log("formSetting", formSetting);
       const res = await Axios.put("/setting", { ...formSetting, id: 1 });
-      console.log("res", res);
       toast.success("Update successfully");
     } catch (error: any) {
-      console.log(error?.response?.data?.message);
       toast.error(error?.response?.data?.message);
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await Axios.get("/setting");
+        console.log(res.data);
+        const defaulValue = res.data[0];
+        setFormSetting(defaulValue);
+      } catch (error: any) {
+        console.log(error?.response?.data?.message);
+      }
+    };
+    fetchData();
+  }, []);
   const handleFormSetting = (e: any) => {
     setFormSetting((prev: any) => ({
       ...prev,

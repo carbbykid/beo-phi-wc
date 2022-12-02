@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
       const resMatches = await promiseMatch;
       const resResult = await promiseResult;
-
+      console.log(resMatches.data);
       const data = resMatches.data.filter((match: any) => {
         const isFind = resResult.data.find((result: any) => {
           return result.id === match.id;

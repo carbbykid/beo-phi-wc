@@ -67,7 +67,7 @@ const renderColumn = (setData: Dispatch<SetStateAction<never[]>>) => {
       title: "Winner",
       field: ({ winner }: { winner: string }) => {
         return (
-          <span className="w-12 h-12 inline-block">
+          <span className="w-8 h-8 md:w-12 md:h-12 inline-block">
             {winner === "phi" ? (
               <Avatar url="/images/home/avatar_phi.jpg" active />
             ) : winner === "beo" ? (
@@ -85,7 +85,7 @@ const renderColumn = (setData: Dispatch<SetStateAction<never[]>>) => {
         return (
           <div className="flex items-center">
             <div className="flex items-center">
-              <span className="mx-2 w-12 h-12 ">
+              <span className="mx-2 w-8 h-8 md:w-12 md:h-12 ">
                 {homeTeam.userSelected === "phi" ? (
                   <Avatar url="/images/home/avatar_phi.jpg" />
                 ) : (
@@ -106,7 +106,7 @@ const renderColumn = (setData: Dispatch<SetStateAction<never[]>>) => {
             </div>
             -
             <div className="flex flex-row-reverse items-center">
-              <span className="mx-2 w-8 h-8 ">
+              <span className="mx-2 w-8 h-8 md:w-12 md:h-12 ">
                 {awayTeam.userSelected === "phi" ? (
                   <Avatar url="/images/home/avatar_phi.jpg" />
                 ) : (

@@ -139,7 +139,11 @@ const MatchCart = ({
           </span>
           <span
             className={`text-sm md:text-lg block ${
-              status === "completed" ? "bg-red-500" : "bg-green-600"
+              status === "completed"
+                ? "bg-red-500"
+                : status === "in_progress"
+                ? "bg-orange-500"
+                : "bg-green-600"
             } font-semibold capitalize px-4 py-2`}
           >
             {status}
