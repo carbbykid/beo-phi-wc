@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const ResultMatchSchema = new Schema(
   {
-    id: { type: String, required: true },
+    id: { type: Number, required: true },
     timeMatch: { type: String, required: true },
     awayTeam: {
       name: { type: String, required: true },

@@ -1,6 +1,6 @@
 import Authentication from "components/page/home/Authentication";
 import MatchCart from "components/page/home/MatchCart";
-import { AxiosWC } from "config/Axios";
+import Axios, { AxiosWC } from "config/Axios";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -12,10 +12,19 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const promiseMatch = AxiosWC.get("/matches");
+      const promiseResult = Axios.get("/worldcup");
 
       const resMatches = await promiseMatch;
-      console.log("allMatch:", resMatches);
-      setAllMatch(resMatches.data);
+      const resResult = await promiseResult;
+
+      const data = resMatches.data.filter((match: any) => {
+        const isFind = resResult.data.find((result: any) => {
+          return result.id === match.id;
+        });
+        return !isFind;
+      });
+
+      setAllMatch(data);
     };
     fetchData();
   }, []);
@@ -53,7 +62,7 @@ const Home: NextPage = () => {
                 id={match.id}
                 stageName={match.stage_name}
                 status={match.status}
-                // setData={setDataResult}
+                setData={setAllMatch}
               />
             </div>
           ))}

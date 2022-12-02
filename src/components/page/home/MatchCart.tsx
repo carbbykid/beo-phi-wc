@@ -19,15 +19,15 @@ const MatchCart = ({
   time,
   stageName,
   status,
-}: // setData,
-{
+  setData,
+}: {
   awayTeam: Team;
   homeTeam: Team;
-  id: string;
+  id: number;
   time: string;
   stageName: string;
   status: string;
-  // setData: any;
+  setData: any;
 }) => {
   const [userSelectedHomeTeam, setUserSelectedHomeTeam] = useState<string>();
   const [userSelectedAwayTeam, setUserSelectedAwayTeam] = useState<string>();
@@ -91,8 +91,9 @@ const MatchCart = ({
 
     try {
       const result = await Axios.post("/worldcup", body);
-      console.log(result);
-      // setData((prev: any) => [...prev, result.data]);
+      setData((prev: any) =>
+        prev.filter((data: any) => data.id !== result.data.id),
+      );
       toast.success("Battle added successfully");
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
@@ -301,9 +302,9 @@ const MatchCart = ({
             max={10}
             min={0}
             className="w-10 md:w-12 rounded-md py-2 text-center font-semibold text-xl border-2  justify-self-end border-gray-800"
-            value={plusScoreAwayTeam}
+            value={plusScoreHomeTeam}
             onChange={(e) => {
-              setPlusScoreAwayTeam(Number(e.target.value));
+              setPlusScoreHomeTeam(Number(e.target.value));
             }}
           />
           <div className="flex justify-center items-center">
@@ -315,23 +316,21 @@ const MatchCart = ({
             max={10}
             min={0}
             className="w-8 md:w-12 rounded-md py-2 text-center font-semibold text-xl border-2 justify-self-start border-gray-800"
-            value={plusScoreHomeTeam}
+            value={plusScoreAwayTeam}
             onChange={(e) => {
-              setPlusScoreHomeTeam(Number(e.target.value));
+              setPlusScoreAwayTeam(Number(e.target.value));
             }}
           />
         </div>
 
         <button
-          // disabled={
-          //   !(
-          //     typeMatch &&
-          //     userSelectedHomeTeam &&
-          //     userSelectedAwayTeam &&
-          //     scoreTeam1 !== undefined &&
-          //     scoreTeam2 !== undefined
-          //   )
-          // }
+          disabled={
+            !(
+              userSelectedHomeTeam &&
+              userSelectedAwayTeam &&
+              status === "completed"
+            )
+          }
           onClick={() => handleSubmit()}
           className="block mx-auto my-0 text-center mt-8 md:mt-5 col-start-3 col-span-1 px-5 py-2 border-2 rounded-md hover:bg-[#FEC310] duration-200 disabled:hover:bg-inherit disabled:opacity-30"
         >
