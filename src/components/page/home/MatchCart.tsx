@@ -134,11 +134,11 @@ const MatchCart = ({
         </button> */}
 
         <div className="text-center flex justify-between items-center">
-          <span className="text-xs md:text-lg block bg-gray-900 font-semibold px-4 py-2 ">
+          <span className="text-sm md:text-lg block bg-gray-900 font-semibold px-4 py-2 ">
             {stageName}
           </span>
           <span
-            className={`text-xs md:text-lg block ${
+            className={`text-sm md:text-lg block ${
               status === "completed" ? "bg-red-500" : "bg-green-600"
             } font-semibold capitalize px-4 py-2`}
           >
@@ -178,7 +178,7 @@ const MatchCart = ({
         <div className="mt-6 md:justify-center grid grid-cols-3 items-center gap-6 md:gap-10 md:col-span-3">
           <div className="text-center md:flex md:flex-row-reverse gap-4 items-center justify-self-end">
             {/* <img src={team1.flagUrl} alt="beo-phi" className="w-14 md:w-20" /> */}
-            <span className="font-semibold text-xs md:text-2xl">
+            <span className="font-semibold text-lg md:text-2xl">
               {homeTeam.name}
             </span>
           </div>
@@ -230,7 +230,7 @@ const MatchCart = ({
           {/* <div className="justify-self-center">{`${team1.score} : ${team2.score}`}</div> */}
           <div className="text-center md:flex items-center gap-4 justify-self-start justify-center">
             {/* <img src={team2.flagUrl} alt="beo-phi" className="w-14 md:w-20" /> */}
-            <span className="font-semibold text-xs md:text-2xl">
+            <span className="font-semibold text-lg md:text-2xl">
               {awayTeam.name}
             </span>
           </div>

@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           pauseOnHover={false}
           theme="light"
         />
+        <Header />
         <Component {...pageProps} />
         {/* <Footer /> */}
       </Provider>

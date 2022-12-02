@@ -33,11 +33,8 @@ export default async function handler(
   }
 
   if (method === "DELETE") {
-    console.log("call delete");
     try {
-      console.log("id:", body._id);
       const idDeleted = await ResultMatch.deleteOne({ _id: body._id });
-      console.log("ideleted", idDeleted);
       res.status(201).json(idDeleted);
     } catch (error) {
       console.log("error");

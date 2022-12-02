@@ -29,30 +29,22 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
   return (
-    <div className="relative before:blur-sm before:absolute before:bg-home-bg before:bg-cover before:h-full before:w-full before:-z-10 min-h-screen pb-40">
+    <div className="relative  before:blur-sm before:absolute before:bg-home-bg before:bg-cover before:h-full before:w-full before:-z-10 min-h-screen pb-40">
       <Head>
         <title>ChiPoPo</title>
         <meta name="description" content="Beo Phi Battle World Cup 2022" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="wrap-content relative pt-14">
+      <div className="wrap-content relative pt-32 md:pt-40">
         <Authentication />
         <h1 className="text-center heading text-5xl mt-16 tracking-[2px]">
           World Cup 2022
         </h1>
-        <h1 className="text-center heading text-3xl mt-5 tracking-wider">
+        <h2 className="text-center heading text-3xl mt-5 tracking-wider">
           Beo vs Phì
-        </h1>
+        </h2>
 
-        <div className="text-center mt-10">
-          <Link href="/dashboard">
-            <button className="px-4 py-2 rounded-md bg-red-900 hover:bg-[#FEC310] border border-white duration-200">
-              Dashboard
-            </button>
-          </Link>
-        </div>
-
-        <div className="mt-7 md:mt-10">
+        <div className="mt-7 md:mt-16">
           {allMatch.map((match: any) => (
             <div key={match.id} className="mb-16">
               <MatchCart

@@ -18,7 +18,11 @@ const FormInput = (props: FormInput): JSX.Element => {
 
   return (
     <div>
-      {label && <label>{label}:</label>}
+      {label && (
+        <label className="mb-2 inline-block font-semibold text-lg text-[#FEC310]">
+          {label}:
+        </label>
+      )}
       <InputType
         types={types}
         {...inputProps}
@@ -31,7 +35,7 @@ const FormInput = (props: FormInput): JSX.Element => {
       />
 
       {errorMessage && (
-        <span className="block invisible opacity-0 h-0 overflow-hidden text-red-500 transition-opacity duration-300 text-[12px]">
+        <span className="block invisible opacity-0 h-0 overflow-hidden text-orange-500 transition-opacity duration-300 text-sm">
           {errorMessage}
         </span>
       )}

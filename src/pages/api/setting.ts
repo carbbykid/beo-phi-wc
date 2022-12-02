@@ -15,12 +15,16 @@ export default async function handler(
       res.status(500).json(error);
     }
   }
-  if (method === "POST") {
+  if (method === "PUT") {
     try {
-      const setting = await Setting.create(body);
-      res.status(201).json(setting);
-    } catch (error) {
-      res.status(500).json(error);
+      const setting = await Setting.findOneAndUpdate({ id: body.id }, body, {
+        new: true,
+        upsert: true,
+      });
+      console.log(body);
+      res.status(200).json(setting);
+    } catch (err) {
+      res.status(500).json(err);
     }
   }
 }

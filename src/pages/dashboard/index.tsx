@@ -33,13 +33,8 @@ const Dashboard = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="pt-36 pb-20 wrap-content relative">
-        <div className="text-center mt-10">
-          <Link href="/">
-            <button className="px-4 py-2 rounded-md bg-red-900 hover:bg-[#FEC310] border border-white duration-200">
-              Home
-            </button>
-          </Link>
-        </div>
+        <h2 className="heading">Dashboard</h2>
+
         <div className="mt-12 overflow-x-auto">
           <TableCustom
             data={dataResult}
@@ -72,7 +67,7 @@ const renderColumn = (setData: Dispatch<SetStateAction<never[]>>) => {
       title: "Winner",
       field: ({ winner }: { winner: string }) => {
         return (
-          <span className="w-8 h-8 inline-block">
+          <span className="w-12 h-12 inline-block">
             {winner === "phi" ? (
               <Avatar url="/images/home/avatar_phi.jpg" active />
             ) : winner === "beo" ? (
@@ -90,7 +85,7 @@ const renderColumn = (setData: Dispatch<SetStateAction<never[]>>) => {
         return (
           <div className="flex items-center">
             <div className="flex items-center">
-              <span className="mx-2 w-8 h-8 ">
+              <span className="mx-2 w-12 h-12 ">
                 {homeTeam.userSelected === "phi" ? (
                   <Avatar url="/images/home/avatar_phi.jpg" />
                 ) : (

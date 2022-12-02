@@ -4,7 +4,7 @@ import React from "react";
 const Avatar = ({ url, active }: { url: string; active?: boolean }) => {
   return (
     <div
-      className={`flex items-center justify-center w-full h-full  rounded-full relative border-2 ${
+      className={`flex items-center justify-center w-full h-full rounded-full relative border-2 ${
         active ? "border-green-400" : "border-white"
       }`}
     >
