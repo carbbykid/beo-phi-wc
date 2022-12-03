@@ -6,17 +6,62 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { FaArrowsAltH } from "react-icons/fa";
 
+const initPercent = {
+  percentPhi: {
+    firstStagePercent: 0,
+    roundOf16Percent: 0,
+    quarterFinalPercent: 0,
+    semiFinalPercent: 0,
+    thirdPlacePercent: 0,
+    finalPercent: 0,
+  },
+  percentBeo: {
+    firstStagePercent: 0,
+    roundOf16Percent: 0,
+    quarterFinalPercent: 0,
+    semiFinalPercent: 0,
+    thirdPlacePercent: 0,
+    finalPercent: 0,
+  },
+};
+
 const Result: NextPage = () => {
   const [countPhi, setCountPhi] = useState<{
-    [key: string]: { [key: string]: string | number };
+    [key: string]: { [key: string]: number };
   }>({});
   const [countBeo, setCountBeo] = useState<{
-    [key: string]: { [key: string]: string | number };
+    [key: string]: { [key: string]: number };
   }>({});
 
-  const [settingValue, setSettingValue] = useState<{ [key: string]: number }>();
+  const [percent, setPercent] = useState<{
+    [key: string]: { [key: string]: number };
+  }>(initPercent);
 
-  console.log(countPhi);
+  const [toTalPercent, setToTalPercent] = useState<{ [key: string]: number }>(
+    {},
+  );
+
+  console.log("percent:", percent);
+
+  const [settingValue, setSettingValue] = useState<{ [key: string]: number }>(
+    {},
+  );
+  const [resultValue, setResultValue] = useState([]);
+
+  const CaculatorPercent = (
+    win: number,
+    draw: number,
+    totalMatch: number,
+    totalPercent: number,
+  ) => {
+    const oneMatchToPercent = totalPercent / totalMatch;
+    const result = Number(
+      (win * oneMatchToPercent + (draw / 2) * oneMatchToPercent).toFixed(3),
+    );
+
+    return result;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const promiseResult = Axios.get("/worldcup");
@@ -26,148 +71,412 @@ const Result: NextPage = () => {
       const resSetting = await promiseSetting;
 
       setSettingValue(resSetting.data[0]);
-
-      const countPhiTerm = resResult.data.reduce((total: any, result: any) => {
-        if (result.winner === "phi" && result.typeMatch === "First stage") {
-          return { ...total, countPhiFS: total.countPhiFS + 1 || 1 };
-        }
-
-        if (result.winner === "phi" && result.typeMatch === "Round of 16") {
-          return { ...total, countPhiR16: total.countPhiR16 + 1 || 1 };
-        }
-
-        if (result.winner === "phi" && result.typeMatch === "Quarter-final") {
-          return { ...total, countPhiQT: total.countPhiQT + 1 || 1 };
-        }
-        if (result.winner === "phi" && result.typeMatch === "Semi-final") {
-          return { ...total, countPhiSF: total.countPhiSF + 1 || 1 };
-        }
-        if (
-          result.winner === "phi" &&
-          result.typeMatch === "Play-off for third place"
-        ) {
-          return { ...total, countPhiTP: total.countPhiTP + 1 || 1 };
-        }
-        if (result.winner === "phi" && result.typeMatch === "Final") {
-          return { ...total, countPhiFN: total.countPhiFN + 1 || 1 };
-        }
-        return total;
-      }, {});
-
-      setCountPhi({
-        "First stage": {
-          count: countPhiTerm.countPhiFS,
-          percent: settingValue?.firstStagePercent as number,
-        },
-        "Round of 16": {
-          count: countPhiTerm.countPhiR16,
-          percent: settingValue?.roundOf16Percent as number,
-        },
-        "Quarter-final": {
-          count: countPhiTerm.countPhiQT,
-          percent: settingValue?.quarterFinalPercent as number,
-        },
-        "Semi-final": {
-          count: countPhiTerm.countPhiSF,
-          percent: settingValue?.semiFinalPercent as number,
-        },
-        "Play-off for third place": {
-          count: countPhiTerm.countPhiTP,
-          percent: settingValue?.thirdPlacePercent as number,
-        },
-        Final: {
-          count: countPhiTerm.countPhiFN,
-          percent: settingValue?.finalPercent as number,
-        },
-      });
-
-      //count Beo
-
-      //   setCountBeo({
-      //     "First stage": resResult.data.filter(
-      //       (result: any) =>
-      //         result.winner === "beo" && result.typeMatch === "First stage",
-      //     ).length,
-      //     "Round of 16": resResult.data.filter(
-      //       (result: any) =>
-      //         result.winner === "beo" && result.typeMatch === "Round of 16",
-      //     ).length,
-      //     "Quarter-final": resResult.data.filter(
-      //       (result: any) =>
-      //         result.winner === "beo" && result.typeMatch === "Quarter-final",
-      //     ).length,
-      //     "Semi-final": resResult.data.filter(
-      //       (result: any) =>
-      //         result.winner === "beo" && result.typeMatch === "Semi-final",
-      //     ).length,
-      //     "Play-off for third place": resResult.data.filter(
-      //       (result: any) =>
-      //         result.winner === "beo" &&
-      //         result.typeMatch === "Play-off for third place",
-      //     ).length,
-      //     Final: resResult.data.filter(
-      //       (result: any) =>
-      //         result.winner === "beo" && result.typeMatch === "Final",
-      //     ).length,
-      //   });
-
-      const countBeoTerm = resResult.data.reduce((total: any, result: any) => {
-        if (result.winner === "beo" && result.typeMatch === "First stage") {
-          return { ...total, countBeoFS: total.countBeoFS + 1 || 1 };
-        }
-
-        if (result.winner === "beo" && result.typeMatch === "Round of 16") {
-          console.log("zo check2");
-          return { ...total, countBeoR16: total.countBeoR16 + 1 || 1 };
-        }
-
-        if (result.winner === "beo" && result.typeMatch === "Quarter-final") {
-          return { ...total, countBeoQT: total.countBeoQT + 1 || 1 };
-        }
-        if (result.winner === "beo" && result.typeMatch === "Semi-final") {
-          return { ...total, countBeoSF: total.countBeoSF + 1 || 1 };
-        }
-        if (
-          result.winner === "beo" &&
-          result.typeMatch === "Play-off for third place"
-        ) {
-          return { ...total, countBeoTP: total.countBeoTP + 1 || 1 };
-        }
-        if (result.winner === "beo" && result.typeMatch === "Final") {
-          return { ...total, countBeoFN: total.countBeoFN + 1 || 1 };
-        }
-        return total;
-      }, {});
-
-      setCountBeo({
-        "First stage": {
-          count: countBeoTerm.countBeoFS,
-          percent: settingValue?.firstStagePercent as number,
-        },
-        "Round of 16": {
-          count: countBeoTerm.countBeoR16,
-          percent: settingValue?.roundOf16Percent as number,
-        },
-        "Quarter-final": {
-          count: countBeoTerm.countBeoQT,
-          percent: settingValue?.quarterFinalPercent as number,
-        },
-        "Semi-final": {
-          count: countBeoTerm.countBeoSF,
-          percent: settingValue?.semiFinalPercent as number,
-        },
-        "Play-off for third place": {
-          count: countBeoTerm.countBeoTP,
-          percent: settingValue?.thirdPlacePercent as number,
-        },
-        Final: {
-          count: countBeoTerm.countBeoFN,
-          percent: settingValue?.finalPercent as number,
-        },
-      });
+      setResultValue(resResult.data);
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const countPhiTerm = resultValue?.reduce((total: any, result: any) => {
+      //First stage
+      if (result.winner === "phi" && result.typeMatch === "First stage") {
+        return {
+          ...total,
+          countFS: {
+            ...total.countFS,
+            win: total.countFS?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "First stage") {
+        return {
+          ...total,
+          countFS: {
+            ...total.countFS,
+            draw: total.countFS?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Round of 16
+      if (result.winner === "phi" && result.typeMatch === "Round of 16") {
+        return {
+          ...total,
+          countR16: {
+            ...total.countR16,
+            win: total.countR16?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Round of 16") {
+        return {
+          ...total,
+          countR16: {
+            ...total.countR16,
+            draw: total.countR16?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Quater-final
+      if (result.winner === "phi" && result.typeMatch === "Quarter-final") {
+        return {
+          ...total,
+          countQT: {
+            ...total.countQT,
+            win: total.countQT?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Quarter-final") {
+        return {
+          ...total,
+          countQT: {
+            ...total.countQT,
+            draw: total.countQT?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Semi-final
+      if (result.winner === "phi" && result.typeMatch === "Semi-final") {
+        return {
+          ...total,
+          countSF: {
+            ...total.countSF,
+            win: total.countSF?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Semi-final") {
+        return {
+          ...total,
+          countSF: {
+            ...total.countSF,
+            draw: total.countSF?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Playoff
+      if (
+        result.winner === "phi" &&
+        result.typeMatch === "Play-off for third place"
+      ) {
+        return {
+          ...total,
+          countTP: {
+            ...total.countTP,
+            win: total.countTP?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (
+        result.winner === "draw" &&
+        result.typeMatch === "Play-off for third place"
+      ) {
+        return {
+          ...total,
+          countTP: {
+            ...total.countTP,
+            draw: total.countTP?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Final
+      if (result.winner === "phi" && result.typeMatch === "Final") {
+        return {
+          ...total,
+          countFN: {
+            ...total.countFN,
+            win: total.countFN?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Final") {
+        return {
+          ...total,
+          countFN: {
+            ...total.countFN,
+            draw: total.countFN?.draw + 1 || 1,
+          },
+        };
+      }
+
+      return total;
+    }, {});
+
+    const countBeoTerm = resultValue?.reduce((total: any, result: any) => {
+      //First stage
+      if (result.winner === "beo" && result.typeMatch === "First stage") {
+        return {
+          ...total,
+          countFS: {
+            ...total.countFS,
+            win: total.countFS?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "First stage") {
+        return {
+          ...total,
+          countFS: {
+            ...total.countFS,
+            draw: total.countFS?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Round of 16
+      if (result.winner === "beo" && result.typeMatch === "Round of 16") {
+        return {
+          ...total,
+          countR16: {
+            ...total.countR16,
+            win: total.countR16?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Round of 16") {
+        return {
+          ...total,
+          countR16: {
+            ...total.countR16,
+            draw: total.countR16?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Quater-final
+      if (result.winner === "beo" && result.typeMatch === "Quarter-final") {
+        return {
+          ...total,
+          countQT: {
+            ...total.countQT,
+            win: total.countQT?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Quarter-final") {
+        return {
+          ...total,
+          countQT: {
+            ...total.countQT,
+            draw: total.countQT?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Semi-final
+      if (result.winner === "beo" && result.typeMatch === "Semi-final") {
+        return {
+          ...total,
+          countSF: {
+            ...total.countSF,
+            win: total.countSF?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Semi-final") {
+        return {
+          ...total,
+          countSF: {
+            ...total.countSF,
+            draw: total.countSF?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Playoff
+      if (
+        result.winner === "beo" &&
+        result.typeMatch === "Play-off for third place"
+      ) {
+        return {
+          ...total,
+          countTP: {
+            ...total.countTP,
+            win: total.countTP?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (
+        result.winner === "draw" &&
+        result.typeMatch === "Play-off for third place"
+      ) {
+        return {
+          ...total,
+          countTP: {
+            ...total.countTP,
+            draw: total.countTP?.draw + 1 || 1,
+          },
+        };
+      }
+
+      //Final
+      if (result.winner === "beo" && result.typeMatch === "Final") {
+        return {
+          ...total,
+          countFN: {
+            ...total.countFN,
+            win: total.countFN?.win + 1 || 1,
+          },
+        };
+      }
+
+      if (result.winner === "draw" && result.typeMatch === "Final") {
+        return {
+          ...total,
+          countFN: {
+            ...total.countFN,
+            draw: total.countFN?.draw + 1 || 1,
+          },
+        };
+      }
+      return total;
+    }, {});
+
+    setCountPhi({
+      firstStagePercent: {
+        win: countPhiTerm?.countFS?.win,
+        draw: countPhiTerm?.countFS?.draw,
+      },
+      roundOf16Percent: {
+        win: countPhiTerm?.countR16?.win,
+        draw: countPhiTerm?.countR16?.draw,
+      },
+      quarterFinalPercent: {
+        win: countPhiTerm?.countQT?.win,
+        draw: countPhiTerm?.countQT?.draw,
+      },
+      semiFinalPercent: {
+        win: countPhiTerm?.countSF?.win,
+        draw: countPhiTerm?.countSF?.draw,
+      },
+      thirdPlacePercent: {
+        win: countPhiTerm?.countTP?.win,
+        draw: countPhiTerm?.countTP?.draw,
+      },
+      finalPercent: {
+        win: countPhiTerm?.countFN?.win,
+        draw: countPhiTerm?.countFN?.draw,
+      },
+    });
+
+    //count Beo
+
+    //   setCountBeo({
+    //     "First stage": resResult.data.filter(
+    //       (result: any) =>
+    //         result.winner === "beo" && result.typeMatch === "First stage",
+    //     ).length,
+    //     "Round of 16": resResult.data.filter(
+    //       (result: any) =>
+    //         result.winner === "beo" && result.typeMatch === "Round of 16",
+    //     ).length,
+    //     "Quarter-final": resResult.data.filter(
+    //       (result: any) =>
+    //         result.winner === "beo" && result.typeMatch === "Quarter-final",
+    //     ).length,
+    //     "Semi-final": resResult.data.filter(
+    //       (result: any) =>
+    //         result.winner === "beo" && result.typeMatch === "Semi-final",
+    //     ).length,
+    //     "Play-off for third place": resResult.data.filter(
+    //       (result: any) =>
+    //         result.winner === "beo" &&
+    //         result.typeMatch === "Play-off for third place",
+    //     ).length,
+    //     Final: resResult.data.filter(
+    //       (result: any) =>
+    //         result.winner === "beo" && result.typeMatch === "Final",
+    //     ).length,
+    //   });
+
+    //Beo
+
+    setCountBeo({
+      firstStagePercent: {
+        win: countBeoTerm?.countFS?.win,
+        draw: countBeoTerm?.countFS?.draw,
+      },
+      roundOf16Percent: {
+        win: countBeoTerm?.countR16?.win,
+        draw: countBeoTerm?.countR16?.draw,
+      },
+      quarterFinalPercent: {
+        win: countBeoTerm?.countQT?.win,
+        draw: countBeoTerm?.countQT?.draw,
+      },
+      semiFinalPercent: {
+        win: countBeoTerm?.countSF?.win,
+        draw: countBeoTerm?.countSF?.draw,
+      },
+      thirdPlacePercent: {
+        win: countBeoTerm?.countTP?.win,
+        draw: countBeoTerm?.countTP?.draw,
+      },
+      finalPercent: {
+        win: countBeoTerm?.countFN?.win,
+        draw: countBeoTerm?.countFN?.draw,
+      },
+    });
+  }, [resultValue]);
+
+  useEffect(() => {
+    const percentTermPhi: { [key: string]: any } = {};
+    const percentTermBeo: { [key: string]: any } = {};
+
+    resultTypes.forEach((result) => {
+      const totalMatch =
+        countPhi[result.value]?.draw +
+        countPhi[result.value]?.win +
+        countBeo[result.value]?.win;
+
+      const resCaculatorPercentPhi =
+        settingValue[result.value] -
+          CaculatorPercent(
+            countPhi[result.value]?.win,
+            countPhi[result.value]?.draw,
+            totalMatch,
+            settingValue[result.value],
+          ) || 0;
+
+      percentTermPhi[result.value] = resCaculatorPercentPhi;
+
+      const resCaculatorPercentBeo =
+        settingValue[result.value] -
+          CaculatorPercent(
+            countBeo[result.value]?.win,
+            countBeo[result.value]?.draw,
+            totalMatch,
+            settingValue[result.value],
+          ) || 0;
+
+      setToTalPercent((prev: any) => {
+        return {
+          totalPhi: prev.totalPhi || 0 + resCaculatorPercentPhi,
+          totalBeo: prev.totalBeo || 0 + resCaculatorPercentBeo,
+        };
+      });
+
+      percentTermBeo[result.value] = resCaculatorPercentBeo;
+    });
+    setPercent({ percentPhi: percentTermPhi, percentBeo: percentTermBeo });
+  }, [countBeo, countPhi, settingValue]);
+
   return (
     <div className="relative bg-red-900 bg-opacity-80 before:blur-sm before:absolute before:bg-home-bg before:bg-cover before:h-full before:w-full before:-z-10 min-h-screen pb-40">
       <Head>
@@ -187,21 +496,24 @@ const Result: NextPage = () => {
             {resultTypes.map((resultType, idx) => (
               <div key={idx} className="text-center">
                 <div className="text-lg">{resultType.nameType}</div>
-                <div className="flex justify-between items-center mt-2 font-semibold gap-2 text-base md:text-xl text-[#FEC310]">
-                  <div>{`${
-                    countPhi[resultType.value]?.count || 0
-                  } (trận)`}</div>
+                <div className="flex justify-between items-center mt-2 font-semibold gap-1 md:gap-3 text-sm md:text-xl text-[#FEC310]">
+                  <div>{`${countPhi[resultType.value]?.win || 0} T - ${
+                    countPhi[resultType.value]?.draw || 0
+                  } H`}</div>
                   <FaArrowsAltH />
                   <div className="text-green-400">{`${
-                    countPhi[resultType.value]?.percent
-                  } (%)`}</div>
+                    percent?.percentPhi[resultType.value]
+                  }/${settingValue[resultType.value]}%`}</div>
                 </div>
               </div>
             ))}
 
             <div className="mt-2 font-semibold text-xl md:text-2xl col-span-2">
               <div>
-                Total: <span className="text-pink-400 text-4xl">70%</span>
+                Total: &nbsp;
+                <span className="text-pink-400 text-4xl">
+                  {toTalPercent?.totalPhi}%
+                </span>
               </div>
             </div>
           </div>
@@ -215,20 +527,23 @@ const Result: NextPage = () => {
             {resultTypes.map((resultType, idx) => (
               <div key={idx} className="text-center">
                 <div className="text-lg">{resultType.nameType}</div>
-                <div className="flex justify-between items-center mt-2 font-semibold gap-2 text-base md:text-xl text-[#FEC310]">
-                  <div>{`${
-                    countBeo[resultType.value]?.count || 0
-                  } (trận)`}</div>
+                <div className="flex justify-between items-center mt-2 font-semibold gap-1 md:gap-3 text-sm md:text-xl text-[#FEC310]">
+                  <div>{`${countBeo[resultType.value]?.win || 0} T - ${
+                    countBeo[resultType.value]?.draw || 0
+                  } H`}</div>
                   <FaArrowsAltH />
                   <div className="text-green-400">{`${
-                    countBeo[resultType.value]?.percent
-                  } (%)`}</div>
+                    percent?.percentBeo[resultType.value]
+                  }/${settingValue[resultType.value]}%`}</div>
                 </div>
               </div>
             ))}
             <div className="mt-2 font-semibold text-xl md:text-2xl col-span-2">
               <div>
-                Total: <span className="text-cyan-400 text-4xl">30%</span>
+                Total:&nbsp;
+                <span className="text-cyan-400 text-4xl">
+                  {toTalPercent?.totalBeo}%
+                </span>
               </div>
             </div>
           </div>
@@ -241,10 +556,10 @@ const Result: NextPage = () => {
 export default Result;
 
 const resultTypes = [
-  { nameType: "Vòng bảng", value: "First stage" },
-  { nameType: "Vòng 1/16", value: "Round of 16" },
-  { nameType: "Vòng Tứ kết", value: "Quarter-final" },
-  { nameType: "Vòng Bán kết", value: "Semi-final" },
-  { nameType: "Tranh hạng 3", value: "Play-off for third place" },
-  { nameType: "Trung kết", value: "Final" },
+  { nameType: "Vòng bảng", value: "firstStagePercent" },
+  { nameType: "Vòng 1/16", value: "roundOf16Percent" },
+  { nameType: "Vòng Tứ kết", value: "quarterFinalPercent" },
+  { nameType: "Vòng Bán kết", value: "semiFinalPercent" },
+  { nameType: "Tranh hạng 3", value: "thirdPlacePercent" },
+  { nameType: "Trung kết", value: "finalPercent" },
 ];
