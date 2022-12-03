@@ -41,8 +41,6 @@ const Result: NextPage = () => {
     {},
   );
 
-  console.log("percent:", percent);
-
   const [settingValue, setSettingValue] = useState<{ [key: string]: number }>(
     {},
   );
@@ -350,28 +348,28 @@ const Result: NextPage = () => {
 
     setCountPhi({
       firstStagePercent: {
-        win: countPhiTerm?.countFS?.win,
-        draw: countPhiTerm?.countFS?.draw,
+        win: countPhiTerm?.countFS?.win || 0,
+        draw: countPhiTerm?.countFS?.draw || 0,
       },
       roundOf16Percent: {
-        win: countPhiTerm?.countR16?.win,
-        draw: countPhiTerm?.countR16?.draw,
+        win: countPhiTerm?.countR16?.win || 0,
+        draw: countPhiTerm?.countR16?.draw || 0,
       },
       quarterFinalPercent: {
-        win: countPhiTerm?.countQT?.win,
-        draw: countPhiTerm?.countQT?.draw,
+        win: countPhiTerm?.countQT?.win || 0,
+        draw: countPhiTerm?.countQT?.draw || 0,
       },
       semiFinalPercent: {
-        win: countPhiTerm?.countSF?.win,
-        draw: countPhiTerm?.countSF?.draw,
+        win: countPhiTerm?.countSF?.win || 0,
+        draw: countPhiTerm?.countSF?.draw || 0,
       },
       thirdPlacePercent: {
-        win: countPhiTerm?.countTP?.win,
-        draw: countPhiTerm?.countTP?.draw,
+        win: countPhiTerm?.countTP?.win || 0,
+        draw: countPhiTerm?.countTP?.draw || 0,
       },
       finalPercent: {
-        win: countPhiTerm?.countFN?.win,
-        draw: countPhiTerm?.countFN?.draw,
+        win: countPhiTerm?.countFN?.win || 0,
+        draw: countPhiTerm?.countFN?.draw || 0,
       },
     });
 
@@ -409,28 +407,28 @@ const Result: NextPage = () => {
 
     setCountBeo({
       firstStagePercent: {
-        win: countBeoTerm?.countFS?.win,
-        draw: countBeoTerm?.countFS?.draw,
+        win: countBeoTerm?.countFS?.win || 0,
+        draw: countBeoTerm?.countFS?.draw || 0,
       },
       roundOf16Percent: {
-        win: countBeoTerm?.countR16?.win,
-        draw: countBeoTerm?.countR16?.draw,
+        win: countBeoTerm?.countR16?.win || 0,
+        draw: countBeoTerm?.countR16?.draw || 0,
       },
       quarterFinalPercent: {
-        win: countBeoTerm?.countQT?.win,
-        draw: countBeoTerm?.countQT?.draw,
+        win: countBeoTerm?.countQT?.win || 0,
+        draw: countBeoTerm?.countQT?.draw || 0,
       },
       semiFinalPercent: {
-        win: countBeoTerm?.countSF?.win,
-        draw: countBeoTerm?.countSF?.draw,
+        win: countBeoTerm?.countSF?.win || 0,
+        draw: countBeoTerm?.countSF?.draw || 0,
       },
       thirdPlacePercent: {
-        win: countBeoTerm?.countTP?.win,
-        draw: countBeoTerm?.countTP?.draw,
+        win: countBeoTerm?.countTP?.win || 0,
+        draw: countBeoTerm?.countTP?.draw || 0,
       },
       finalPercent: {
-        win: countBeoTerm?.countFN?.win,
-        draw: countBeoTerm?.countFN?.draw,
+        win: countBeoTerm?.countFN?.win || 0,
+        draw: countBeoTerm?.countFN?.draw || 0,
       },
     });
   }, [resultValue]);
@@ -444,7 +442,6 @@ const Result: NextPage = () => {
         countPhi[result.value]?.draw +
         countPhi[result.value]?.win +
         countBeo[result.value]?.win;
-
       const resCaculatorPercentPhi =
         settingValue[result.value] -
           CaculatorPercent(
@@ -453,7 +450,14 @@ const Result: NextPage = () => {
             totalMatch,
             settingValue[result.value],
           ) || 0;
-
+      console.log(
+        "res percent Phi",
+        result.value,
+        countPhi[result.value]?.win,
+        countPhi[result.value]?.draw,
+        totalMatch,
+        settingValue[result.value],
+      );
       percentTermPhi[result.value] = resCaculatorPercentPhi;
 
       const resCaculatorPercentBeo =
@@ -477,6 +481,7 @@ const Result: NextPage = () => {
     setPercent({ percentPhi: percentTermPhi, percentBeo: percentTermBeo });
   }, [countBeo, countPhi, settingValue]);
 
+  console.log("percent", percent);
   return (
     <div className="relative bg-red-900 bg-opacity-80 before:blur-sm before:absolute before:bg-home-bg before:bg-cover before:h-full before:w-full before:-z-10 min-h-screen pb-40">
       <Head>
@@ -561,5 +566,5 @@ const resultTypes = [
   { nameType: "Vòng Tứ kết", value: "quarterFinalPercent" },
   { nameType: "Vòng Bán kết", value: "semiFinalPercent" },
   { nameType: "Tranh hạng 3", value: "thirdPlacePercent" },
-  { nameType: "Trung kết", value: "finalPercent" },
+  { nameType: "Chung kết", value: "finalPercent" },
 ];

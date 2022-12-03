@@ -134,7 +134,14 @@ const MatchCart = ({
         </button> */}
 
         <div className="text-center flex justify-between items-center">
-          <span className="text-sm md:text-lg block bg-gray-900 font-semibold px-4 py-2 ">
+          <span
+            className={` md:text-lg block bg-gray-900 font-semibold  ${
+              stageName === "Play-off for third place" ||
+              stageName === "Quarter-final"
+                ? "text-xs px-2 py-2"
+                : "text-sm px-4 py-2"
+            }`}
+          >
             {stageName}
           </span>
           <span
@@ -144,7 +151,11 @@ const MatchCart = ({
                 : status === "in_progress"
                 ? "bg-orange-500"
                 : "bg-green-600"
-            } font-semibold capitalize px-4 py-2`}
+            } ${
+              stageName === "Play-off for third place"
+                ? "px-2 py-2"
+                : "px-4 py-2"
+            } font-semibold capitalize `}
           >
             {status}
           </span>
