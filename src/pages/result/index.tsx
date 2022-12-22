@@ -450,14 +450,7 @@ const Result: NextPage = () => {
             totalMatch,
             settingValue[result.value],
           ) || 0;
-      console.log(
-        "res percent Phi",
-        result.value,
-        countPhi[result.value]?.win,
-        countPhi[result.value]?.draw,
-        totalMatch,
-        settingValue[result.value],
-      );
+      console.log("res percent Phi", resCaculatorPercentPhi);
       percentTermPhi[result.value] = resCaculatorPercentPhi;
 
       const resCaculatorPercentBeo =
@@ -471,17 +464,17 @@ const Result: NextPage = () => {
 
       setToTalPercent((prev: any) => {
         return {
-          totalPhi: prev.totalPhi || 0 + resCaculatorPercentPhi,
-          totalBeo: prev.totalBeo || 0 + resCaculatorPercentBeo,
+          totalPhi: prev.totalPhi + resCaculatorPercentPhi,
+          totalBeo: prev.totalBeo + resCaculatorPercentBeo,
         };
       });
-
+      console.log("res percent Beo", resCaculatorPercentBeo);
       percentTermBeo[result.value] = resCaculatorPercentBeo;
     });
     setPercent({ percentPhi: percentTermPhi, percentBeo: percentTermBeo });
   }, [countBeo, countPhi, settingValue]);
 
-  console.log("percent", percent);
+  console.log("percent", toTalPercent);
   return (
     <div className="relative bg-red-900 bg-opacity-80 before:blur-sm before:absolute before:bg-home-bg before:bg-cover before:h-full before:w-full before:-z-10 min-h-screen pb-40">
       <Head>

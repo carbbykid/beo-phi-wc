@@ -3,7 +3,6 @@ import Avatar from "components/page/dashboard/Avatar";
 import { Team } from "components/page/home/MatchCart";
 import Axios from "config/Axios";
 import Head from "next/head";
-import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";

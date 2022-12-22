@@ -41,9 +41,8 @@ const Setting = () => {
     const fetchData = async () => {
       try {
         const res = await Axios.get("/setting");
-        console.log(res.data);
-        const defaulValue = res.data[0];
-        setFormSetting(defaulValue);
+        const defaultValue = res.data[0];
+        setFormSetting(defaultValue);
       } catch (error: any) {
         console.log(error?.response?.data?.message);
       }
